@@ -1,2 +1,9 @@
-package by.wms.acc.Repository;public interface GoodsRepository {
+package by.wms.acc.Repository;
+
+import by.wms.acc.Entity.Goods;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface GoodsRepository extends JpaRepository<Goods, Integer> {
 }
