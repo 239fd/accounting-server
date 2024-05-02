@@ -15,7 +15,6 @@ import java.util.Date;
 public class Request {
 
     @Id
-    @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", unique=true)
     private Integer id;

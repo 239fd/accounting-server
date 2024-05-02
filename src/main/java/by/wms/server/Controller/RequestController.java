@@ -18,7 +18,7 @@ public class RequestController {
 
     private RequestService supplierService;
 
-    @PostMapping("/request")
+    @PostMapping("/create")
     public ResponseEntity<Request> create(@RequestBody RequestDTO dto){
         return new ResponseEntity<>(supplierService.create(dto), HttpStatus.OK);
     }
