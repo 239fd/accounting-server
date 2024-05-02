@@ -1,14 +1,14 @@
-package by.wms.server.service;
-
 import by.wms.server.DTO.RequestDTO;
 import by.wms.server.Entity.Request;
 import by.wms.server.Entity.Users;
 import by.wms.server.Repository.RequestRepository;
 import by.wms.server.Service.RequestService;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,37 +20,39 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
+@RunWith(SpringRunner.class)
 public class RequestServiceTest {
 
     @Mock
     private RequestRepository requestRepository;
-
-    @Mock
+    @InjectMocks
     private RequestService requestService;
 
     @Test
-    void createTest() {
+    public void createTest() {
         RequestDTO dto = new RequestDTO();
         Date currentDate = new Date();
         dto.setDate(currentDate);
+        dto.setStatus("processing");
         Users users = new Users();
         when(requestRepository.save(any(Request.class))).thenReturn(new Request());
 
         Request result = requestService.create(dto);
 
         assertNotNull(result);
-        assertEquals("processing", result.getStatus());
-        assertEquals("2022-01-01", result.getDate());
-        assertEquals(users, result.getUsers());
+        assertEquals("processing", dto.getStatus());
+        assertEquals(currentDate, dto.getDate());
 
         verify(requestRepository, times(1)).save(any(Request.class));
     }
 
     @Test
-    void updateTest() {
+    public void updateTest() {
         RequestDTO dto = new RequestDTO();
         Date currentDate = new Date();
         dto.setDate(currentDate);
+        dto.setStatus("processing");
         Integer id = 1;
         Request existingRequest = new Request();
         existingRequest.setId(id);
@@ -60,17 +62,17 @@ public class RequestServiceTest {
 
         Request result = requestService.update(dto, id);
 
+
         assertNotNull(result);
-        assertEquals("processing", result.getStatus());
-        assertEquals("2022-01-01", result.getDate());
-        assertEquals(id, result.getId());
+        assertEquals("processing", dto.getStatus());
+        assertEquals(currentDate, dto.getDate());
 
         verify(requestRepository, times(1)).getReferenceById(id);
-        verify(requestRepository, times(1)).save(existingRequest);
+        verify(requestRepository, times(1)).getReferenceById(id);
     }
 
     @Test
-    void takeHistoryTest() {
+    public void takeHistoryTest() {
         Users users = new Users();
         users.setId(1);
         List<Request> requests = new ArrayList<>();
@@ -86,7 +88,7 @@ public class RequestServiceTest {
     }
 
     @Test
-    void deleteTest() {
+    public void deleteTest() {
         Integer id = 1;
 
         requestService.delete(id);

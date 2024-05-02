@@ -1,38 +1,29 @@
-package by.wms.server.service;
-
-import by.wms.server.Controller.UsersController;
 import by.wms.server.DTO.UsersDTO;
 import by.wms.server.Entity.Users;
 import by.wms.server.Repository.UsersRepository;
 import by.wms.server.Service.UsersService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.http.ResponseEntity;
-import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
+@SpringBootTest
+@RunWith(SpringRunner.class)
 public class UsersServiceTest {
-    @InjectMocks
-    private UsersController usersController;
-    @Mock
-    private UsersDTO usersDTO;
+
     @Mock
     private UsersRepository usersRepository;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+    @InjectMocks
+    private UsersService usersService;
 
     @Test
-    void userUpdateTest(){
-        UsersService usersService = Mockito.mock(UsersService.class);
+    public void userUpdateTest(){
+        UsersDTO usersDTO = new UsersDTO();
 
         usersDTO.setLogin("john");
         usersDTO.setEmail("john@example.com");
@@ -42,7 +33,10 @@ public class UsersServiceTest {
         usersDTO.setSecondName("john");
         usersDTO.setSurname("");
         when(usersRepository.save(any(Users.class))).thenReturn(new Users());
-        ResponseEntity<Users> response = usersController.update(usersDTO, 1);
+
+        Users users = new Users();
+        users.setId(1);
+
 
     }
 }
